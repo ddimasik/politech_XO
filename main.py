@@ -9,39 +9,38 @@ def show_field(current_state, size=3):
             print(f"[ {current_state[cell_num - 1]} {cell_num} ]", end='')
             cell_num += 1
         print("\n")
-    print("\n\n")
+    print("\n")
 
 
 def process_user_input():
-    pass
+    while True:
+        try:
+            usr_input = int(input(": "))
+            break
+        except Exception as e:
+            print(F"Error {e}. Wrong input type, please insert number", end='')
 
-    # cell_num = 0
-    # print(f"{'X' if gamer == 1 else 'O'}'s gamer turn")
-    # try:
-    #     cell_num = int(input("Enter cell number: "))
-    # except ValueError as e:
-    #     print(F"Wrong input type, please insert number more than 0 and less or equal {len(current_state)}")
-    #     make_move(current_state, gamer)
-    #
-    # if cell_num <= 0 or cell_num >= len(current_state):
-    #     print(F"{cell_num} is wrong input, please insert number more than 0 and less or equal {len(current_state)}")
-    #     make_move(current_state, gamer)
-    # else:
-    #     cell_num -= 1
+    return usr_input
 
 
 def make_move(current_state, gamer):
-    # process_user_input()
-    print(f"{'X' if gamer else 'O'}'s turn")
-    cell_num = int(input("Enter cell number: ")) - 1
+    while True:
+        print(f"{'X' if gamer else 'O'}'s turn")
+        print("Enter cell number", end='')
+        
+        cell_num = process_user_input()
+        
+        if cell_num > len(current_state) or cell_num <= 0:
+            print(f"Cell number should be between 1 and {len(current_state)} but was {cell_num}")
+            print("try another one, please")
+        elif current_state[cell_num - 1] != '_':
+            print(f"cell {cell_num} already occupied, look at field")
+            show_field(current_state)
+            print("try another one, please")
+        else:
+            break
 
-    if current_state[cell_num] == '_':
-        current_state[cell_num] = 'X' if gamer else 'O'
-    else:
-        print(f"cell {current_state[cell_num]} already occupied, look")
-        show_field(current_state)
-        print("try another one, please")
-        make_move(current_state, gamer)
+    current_state[cell_num - 1] = 'X' if gamer else 'O'
 
     return current_state
 
@@ -86,9 +85,13 @@ def make_turn():
 
 
 def end_game():
-    if int(input("Press 8 to start new game, or 13 to finish: ")) == 8:
+    
+    print("Press 8 to start new game, or 13 to finish", end='')
+    usr_input = process_user_input()
+    if usr_input == 8:
         start_game()
     else:
+        print("See ya!")
         exit(0)
 
 
